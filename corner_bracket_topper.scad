@@ -9,8 +9,10 @@
 //
 // Based on 4199's PIU Pad Setup and Maintenance Guide.
 
+include <params.scad>
+
 // ============================================================
-// PARAMETERS — Measure your corner brackets and adjust!
+// PARAMETERS
 // ============================================================
 
 // The corner bracket is L-shaped:
@@ -35,33 +37,16 @@
 //    +------------------------+
 //    |gap|    arm_width        |
 
-// Length of each arm of the L (measured from the outer corner)
-arm_length_x = 56.2; // mm — MEASURE THIS
-arm_length_y = 56.2; // mm — MEASURE THIS
-
-// Width of each arm
-arm_width = 25.4; // mm — MEASURE THIS
-
 // Thickness of the spacer (sits between bracket and panel)
-thickness = 3; // mm
-
-// Corner rounding radius
-corner_radius = 2; // mm
+thickness = 2.6; // mm
 
 // --- Panel Lip ---
 // Raised edge along the outer side of both arms to prevent
 // the acrylic panel from sliding around.
 lip_height = 8; // mm (panel is 10.2mm tall)
-lip_thickness = 1.5; // mm
-panel_gap = 3; // mm — gap between bracket outer edge and panel edge
-
-// --- Screw Hole ---
-// Diameter of the screw clearance hole (measure your screw)
-screw_hole_diameter = 8.5; // mm — should be slightly larger than screw shaft
-
-// Position of screw hole, measured from the inner corner of the L
-screw_hole_x = 5; // mm — MEASURE THIS
-screw_hole_y = 5; // mm — MEASURE THIS
+lip_thickness = 1; // mm
+panel_gap = 3.5; // mm — gap between bracket outer edge and panel edge
+lip_inset = 2; // mm — lip stops this far short of each arm tip
 
 // ============================================================
 // DERIVED
@@ -69,27 +54,14 @@ screw_hole_y = 5; // mm — MEASURE THIS
 
 total_height = thickness + lip_height;
 
-// ============================================================
-// MODEL
-// ============================================================
-
-module l_shape(lx, ly, w) {
-    union() {
-        square([lx, w]);
-        square([w, ly]);
-    }
-}
-
-module l_shape_rounded(lx, ly, w, r) {
-    offset(r = r)
-    offset(delta = -r)
-        l_shape(lx, ly, w);
-}
-
 // Outer dimensions including the panel gap extension
 outer_arm_length_x = arm_length_x + panel_gap;
 outer_arm_length_y = arm_length_y + panel_gap;
 outer_arm_width = arm_width + panel_gap;
+
+// ============================================================
+// MODEL
+// ============================================================
 
 module corner_bracket_topper() {
     // The base and lip are shifted by panel_gap so the outer edge
@@ -112,6 +84,12 @@ module corner_bracket_topper() {
             linear_extrude(height = lip_height + 0.01)
                 l_shape(outer_arm_length_x, outer_arm_length_y,
                         outer_arm_width);
+
+        // Trim lip at arm tips so walls are shorter than base
+        translate([outer_arm_length_x - lip_inset, -0.01, thickness])
+            cube([lip_inset + 0.01, outer_arm_width + 0.02, lip_height + 0.01]);
+        translate([-0.01, outer_arm_length_y - lip_inset, thickness])
+            cube([outer_arm_width + 0.02, lip_inset + 0.01, lip_height + 0.01]);
 
         // Screw hole (all the way through)
         // screw_hole_x/y measured from the inner (concave) corner of the L

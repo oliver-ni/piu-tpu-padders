@@ -8,8 +8,10 @@
 //
 // Based on 4199's PIU Pad Setup and Maintenance Guide.
 
+include <params.scad>
+
 // ============================================================
-// PARAMETERS — Measure your L brackets and adjust as needed!
+// PARAMETERS
 // ============================================================
 
 // Cross-section of the cap on the bracket:
@@ -23,20 +25,9 @@
 //    +--+              +--+
 //    wall              wall
 
-// Length of the L bracket (long dimension)
-bracket_length = 69.7; // mm
-
-// Width of the flat top of the L bracket (short dimension)
-bracket_width = 26.5; // mm
-
-// Depth of the pocket — measure the metal bracket + stock foam
-// together (the cap fits over both). Measure from the base of
-// the metal to the top of the foam.
-bracket_thickness = 3.6; // mm (metal + foam)
-
 // Top thickness (above the bracket, contacts the acrylic panel)
 // This is what raises the panel. Equivalent to the tape stack.
-top_thickness = 3; // mm
+top_thickness = 2.6; // mm
 
 // Wall thickness on each side of the pocket
 wall_thickness = 1.5; // mm
@@ -44,10 +35,6 @@ wall_thickness = 1.5; // mm
 // Clearance added to the pocket so it slides on.
 // TPU is flexible so this can be small.
 pocket_clearance = 0; // mm per side
-
-// Corner rounding radius
-corner_radius = 2; // mm
-
 
 // ============================================================
 // DERIVED
@@ -63,13 +50,6 @@ pocket_width = bracket_width + 2 * pocket_clearance;
 // ============================================================
 // MODEL
 // ============================================================
-
-module rounded_rect(l, w, h, r) {
-    // 2D rounded rectangle extruded to height h, centered on XY
-    linear_extrude(height = h)
-        offset(r = r)
-            square([l - 2*r, w - 2*r], center = true);
-}
 
 module l_bracket_topper() {
     difference() {
