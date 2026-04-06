@@ -31,7 +31,7 @@ screw_hole_y = 5; // mm — from inner corner of L
 // ============================================================
 
 corner_radius = 2; // mm
-spacer_thickness = 0.4; // mm — for test spacers
+spacer_thickness = 0.8; // mm — for test spacers
 
 // ============================================================
 // SHARED MODULES

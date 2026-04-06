@@ -38,12 +38,12 @@ include <params.scad>
 //    |gap|    arm_width        |
 
 // Thickness of the spacer (sits between bracket and panel)
-thickness = 2.6; // mm
+thickness = 4; // mm
 
 // --- Panel Lip ---
 // Raised edge along the outer side of both arms to prevent
 // the acrylic panel from sliding around.
-lip_height = 8; // mm (panel is 10.2mm tall)
+lip_height = 6; // mm (panel is 10.2mm tall)
 lip_thickness = 1; // mm
 panel_gap = 3.5; // mm — gap between bracket outer edge and panel edge
 lip_inset = 2; // mm — lip stops this far short of each arm tip
